@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import axios from "axios"
+import { UserContext } from './UserContext';
 
 const Register = () => {
     // useStates
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
+
+    // Using useContext Hook
+    const { setloggedinusername, setid } = useContext(UserContext)
 
     // Functions
     // 1. Register:
@@ -16,7 +20,9 @@ const Register = () => {
         }
         try {
             const result = (await axios.post(`/api/user/createUser`, user)).data;
-            console.log(result._id)
+            console.log(result.id)
+            setloggedinusername(username)
+            setid(result.id)
             setusername('');
             setpassword('');
         }
